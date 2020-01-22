@@ -25,6 +25,39 @@ class BankAccountTest {
     void isEmailValidTest(){
         assertTrue(BankAccount.isEmailValid( "a@b.com"));
         assertFalse( BankAccount.isEmailValid(""));
+
+        //underscore, period, or dash not followed by letters or number
+        assertTrue(BankAccount.isEmailValid( "abc-d@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abc-@mail.com"));
+
+        //double underscore, period, or dash
+        assertTrue(BankAccount.isEmailValid( "abc.def@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abc..def@mail.com"));
+
+        //not start with number or letters
+        assertTrue(BankAccount.isEmailValid( "abc@mail.com"));
+        assertFalse( BankAccount.isEmailValid(".abc@mail.com"));
+
+        //contains other symbol other than underscore, period, or dash before or after @
+        assertTrue(BankAccount.isEmailValid( "abc.def@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abc%def@mai~l.com"));
+
+        //domain must be at least two characters
+        assertTrue(BankAccount.isEmailValid( "abc@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abc@mail.c"));
+
+        //not contains period after @
+        assertTrue(BankAccount.isEmailValid( "abc@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abc@mail-com"));
+
+        //contains double period after @
+        assertTrue(BankAccount.isEmailValid( "abc@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abc@mail..com"));
+
+        //contains double @
+        assertTrue(BankAccount.isEmailValid( "abcdef@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abc@def@mail..com"));
+
     }
 
     @Test
