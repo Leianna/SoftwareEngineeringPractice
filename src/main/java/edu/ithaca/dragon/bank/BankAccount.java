@@ -34,11 +34,32 @@ public class BankAccount {
 
     }
 
+    //searches for invalid symbols(%,~) within email string
+    public static boolean invalidSymbol(String email){
+        if (email.indexOf('%')!=-1) {
+
+            return true;
+        }
+        if (email.indexOf('~')!=-1) {
+
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 
     public static boolean isEmailValid(String email){
         if (email.indexOf('@') == -1){
             return false;
         }
+
+        else if(invalidSymbol(email)){
+
+            return false;
+        }
+
         else {
             return true;
         }
