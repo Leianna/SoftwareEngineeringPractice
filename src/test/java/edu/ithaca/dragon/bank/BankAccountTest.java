@@ -18,12 +18,23 @@ class BankAccountTest {
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
         bankAccount.withdraw(100);
 
+       //CE: This test is a a valid equivalence class case, but it is not a boundary case
         assertEquals(100, bankAccount.getBalance());
+
+        /**CE: This test case is missing invalid cases like withdrawing a negative number, and over drawing the account
+         * This test case seems to test three digit positive inputs, but can also test single digit, double digit,
+         * quadrupal digit inputs etc. If the specs for the program included a minimum and maximum withdraw value there
+         * should be lower and upper boundary cases to test the function as well.**/
     }
 
     @Test
     void isEmailValidTest(){
+
+        /**CE:This is a valid equivalence class, where the minimum requirements for an email are satisfied
+         * This test is a boarder case**/
         assertTrue(BankAccount.isEmailValid( "a@b.com"));
+
+       /**CE: This is an invalid equivalence class, boarder case, where no input is provided **/
         assertFalse( BankAccount.isEmailValid(""));
 
 //        //underscore, period, or dash not followed by letters or number
@@ -39,7 +50,11 @@ class BankAccountTest {
 //        assertFalse( BankAccount.isEmailValid(".abc@mail.com"));
 
         //contains other symbol other than underscore, period, or dash before or after @
+        /**CE: This test is a valid equivalence class member but it is not a border case**/
         assertTrue(BankAccount.isEmailValid( "abc.def@mail.com"));
+
+        /**CE: This is an invalid equivalence class, This is NOT a boarder case. In this instance a boarder case would
+         * contain only one invalid symbol. Since this has at least one invalid symbol it is a member of an equivalence class**/
         assertFalse( BankAccount.isEmailValid("abc%def@mai~l.com"));
 
 //        //domain must be at least two characters
@@ -57,6 +72,7 @@ class BankAccountTest {
 //        //contains double @
 //        assertTrue(BankAccount.isEmailValid( "abcdef@mail.com"));
 //        assertFalse( BankAccount.isEmailValid("abc@def@mail..com"));
+
 
     }
 
