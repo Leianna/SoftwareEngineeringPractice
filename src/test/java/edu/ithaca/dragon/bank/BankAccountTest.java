@@ -35,7 +35,7 @@ class BankAccountTest {
     }
 
     @Test
-    void withdrawTest() {
+    void withdrawTest()throws InsufficientFundsException {
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
         bankAccount.withdraw(100);
 
@@ -86,8 +86,11 @@ class BankAccountTest {
         /**
          * Error
          */
-        bankAccount.withdraw(100);
-        assertEquals(0, bankAccount.getBalance());
+        assertThrows(InsufficientFundsException.class, ()->bankAccount.withdraw(100));
+        //bankAccount.withdraw(100);
+        //assertEquals(0, bankAccount.getBalance());
+
+        //CE: This test should throw the Insufficeint Funds Exception. I've commented out the original test added the asserThrows
     }
 
     @Test
