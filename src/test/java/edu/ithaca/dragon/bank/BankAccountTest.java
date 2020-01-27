@@ -37,41 +37,49 @@ class BankAccountTest {
        /**CE: This is an invalid equivalence class, boarder case, where no input is provided **/
         assertFalse( BankAccount.isEmailValid(""));
 
-//        //underscore, period, or dash not followed by letters or number
-//        assertTrue(BankAccount.isEmailValid( "abc-d@mail.com"));
-//        assertFalse( BankAccount.isEmailValid("abc-@mail.com"));
-//
-//        //double underscore, period, or dash
-//        assertTrue(BankAccount.isEmailValid( "abc.def@mail.com"));
-//        assertFalse( BankAccount.isEmailValid("abc..def@mail.com"));
-//
-//        //not start with number or letters
-//        assertTrue(BankAccount.isEmailValid( "abc@mail.com"));
-//        assertFalse( BankAccount.isEmailValid(".abc@mail.com"));
+        /**
+         * Represent: location of symbols
+         * valid symbols located before, middle ,and  after: [- _ . @]
+         */
+        assertFalse( BankAccount.isEmailValid("-abssc@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abssc-@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abssc@mail.com-"));
+
+        /**
+         * Represent:double symbols
+         * including valid and invalid symbols in different location
+         * located before, middle ,and  after
+         */
+        assertFalse( BankAccount.isEmailValid("a..bcdef@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abcde;;f@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abcdef@mail.co##m"));
+
 
         //contains other symbol other than underscore, period, or dash before or after @
-        /**CE: This test is a valid equivalence class member but it is not a border case**/
-        assertTrue(BankAccount.isEmailValid( "abc.def@mail.com"));
+//        /**CE: This test is a valid equivalence class member but it is not a border case**/
+//        assertTrue(BankAccount.isEmailValid( "abc.def@mail.com"));
 
-        /**CE: This is an invalid equivalence class, This is NOT a boarder case. In this instance a boarder case would
-         * contain only one invalid symbol. Since this has at least one invalid symbol it is a member of an equivalence class**/
-        assertFalse( BankAccount.isEmailValid("abc%def@mai~l.com"));
+//        /**CE: This is an invalid equivalence class, This is NOT a boarder case. In this instance a boarder case would
+//         * contain only one invalid symbol. Since this has at least one invalid symbol it is a member of an equivalence class**/
+//        assertFalse( BankAccount.isEmailValid("abc%def@mai~l.com"));
 
-//        //domain must be at least two characters
-//        assertTrue(BankAccount.isEmailValid( "abc@mail.com"));
-//        assertFalse( BankAccount.isEmailValid("abc@mail.c"));
-//
-//        //not contains period after @
-//        assertTrue(BankAccount.isEmailValid( "abc@mail.com"));
-//        assertFalse( BankAccount.isEmailValid("abc@mail-com"));
-//
-//        //contains double period after @
-//        assertTrue(BankAccount.isEmailValid( "abc@mail.com"));
-//        assertFalse( BankAccount.isEmailValid("abc@mail..com"));
-//
-//        //contains double @
-//        assertTrue(BankAccount.isEmailValid( "abcdef@mail.com"));
-//        assertFalse( BankAccount.isEmailValid("abc@def@mail..com"));
+        /**
+         * Represent:inavlid symbols
+         * include all inavlid symbols: ~`!#$%^&*()+={}[]\|;:"'<,?/>
+         * located before, middle ,and  after
+         */
+        assertFalse( BankAccount.isEmailValid("a%bcdef@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abcde^f@mail.com"));
+        assertFalse( BankAccount.isEmailValid("abcdef@mail.co$m"));
+
+
+        //domain must be at least two characters/contains period after @
+        /**
+         * number of characters in different position
+         */
+        assertFalse( BankAccount.isEmailValid("abc@mail.c"));
+        assertFalse( BankAccount.isEmailValid("abc@.com"));
+        assertFalse( BankAccount.isEmailValid("@mail.com"));
 
 
     }
