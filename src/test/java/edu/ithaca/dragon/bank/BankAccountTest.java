@@ -8,9 +8,30 @@ class BankAccountTest {
 
     @Test
     void getBalanceTest() {
+        /**
+         * full amount
+         */
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
-
         assertEquals(200, bankAccount.getBalance());
+
+        /**
+         * Decimals
+         */
+        BankAccount bankAccount1 = new BankAccount("a@b.com", 111.11);
+        assertEquals(111.11, bankAccount1.getBalance());
+
+        /**
+         * Round up to hundredths
+         */
+        BankAccount bankAccount2 = new BankAccount("a@b.com", 55.5555);
+        assertEquals(55.56, bankAccount2.getBalance());
+
+        /**
+         * zero amount
+         */
+        BankAccount bankAccount3 = new BankAccount("a@b.com", 0);
+        assertEquals(0, bankAccount3.getBalance());
+
     }
 
     @Test
@@ -25,6 +46,36 @@ class BankAccountTest {
          * This test case seems to test three digit positive inputs, but can also test single digit, double digit,
          * quadrupal digit inputs etc. If the specs for the program included a minimum and maximum withdraw value there
          * should be lower and upper boundary cases to test the function as well.**/
+
+        /**
+         * First decimals
+         */
+        bankAccount.withdraw(55.50);
+        assertEquals(44.50, bankAccount.getBalance());
+
+        /**
+         * Second decimals
+         */
+        bankAccount.withdraw(22.25);
+        assertEquals(22.25, bankAccount.getBalance());
+
+        /**
+         * Error: negative
+         */
+        bankAccount.withdraw(-22.25);
+        assertEquals(22.25, bankAccount.getBalance());
+
+        /**
+         * Zeros
+         */
+        bankAccount.withdraw(22.25);
+        assertEquals(0, bankAccount.getBalance());
+
+        /**
+         * Error
+         */
+        bankAccount.withdraw(100);
+        assertEquals(0, bankAccount.getBalance());
     }
 
     @Test
