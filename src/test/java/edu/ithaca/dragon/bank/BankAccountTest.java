@@ -9,25 +9,25 @@ class BankAccountTest {
     @Test
     void getBalanceTest() {
         /**
-         * full amount
+         * Lei/ Equiv: full amount
          */
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
         assertEquals(200, bankAccount.getBalance());
 
         /**
-         * Decimals
+         * Lei/ Equiv: Decimals
          */
-        BankAccount bankAccount1 = new BankAccount("a@b.com", 111.11);
-        assertEquals(111.11, bankAccount1.getBalance());
+        BankAccount bankAccount1 = new BankAccount("a@b.com", 555.55);
+        assertEquals(555.55, bankAccount1.getBalance());
 
         /**
-         * Round up to hundredths
+         * Lei/ Border Maximum: 1,000,000 amount
          */
-        BankAccount bankAccount2 = new BankAccount("a@b.com", 55.5555);
-        assertEquals(55.56, bankAccount2.getBalance());
+        BankAccount bankAccount2 = new BankAccount("a@b.com", 1000000);
+        assertEquals(1000000, bankAccount2.getBalance());
 
         /**
-         * zero amount
+         * Lei/ Border Minimum: zero amount
          */
         BankAccount bankAccount3 = new BankAccount("a@b.com", 0);
         assertEquals(0, bankAccount3.getBalance());
