@@ -62,7 +62,19 @@ class BankAccountTest {
         /**
          * Error: negative
          */
-        bankAccount.withdraw(-22.25);
+        bankAccount.withdraw(-0.01);
+        assertEquals(22.25, bankAccount.getBalance());
+
+        /**
+         * Error: negative
+         */
+        bankAccount.withdraw(-1.00);
+        assertEquals(22.25, bankAccount.getBalance());
+
+        /**
+         * Error: negative
+         */
+        bankAccount.withdraw(-100.00);
         assertEquals(22.25, bankAccount.getBalance());
 
         /**
