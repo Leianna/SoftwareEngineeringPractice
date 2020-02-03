@@ -145,7 +145,7 @@ public class BankAccount {
         else if(transferInOrOut=="out"){
             withdraw(amount);
         }else{
-            throw new IllegalArgumentException("Must be lower case in or out");
+            throw new IllegalArgumentException("Must be lower case: in or/ out");
         }
 
     }
