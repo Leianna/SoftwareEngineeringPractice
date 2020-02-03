@@ -58,24 +58,30 @@ class BankAccountTest {
          */
         bankAccount.withdraw(22.25);
         assertEquals(22.25, bankAccount.getBalance());
+//
+        BankAccount bankAccount1 = new BankAccount("a@b.com", 200);
+        /**
+         * Error:  with draw negative
+         */
+        assertThrows(IllegalArgumentException.class, ()->bankAccount1.withdraw(-0.01));
+
 
         /**
-         * Error: negative
+         * Error:  with draw negative
          */
-        bankAccount.withdraw(-0.01);
-        assertEquals(22.25, bankAccount.getBalance());
+        assertThrows(IllegalArgumentException.class, ()->bankAccount1.withdraw(-1.00));
+
 
         /**
-         * Error: negative
+         * Error: with draw negative
          */
-        bankAccount.withdraw(-1.00);
-        assertEquals(22.25, bankAccount.getBalance());
+        assertThrows(IllegalArgumentException.class, ()->bankAccount1.withdraw(-100.00));
+
 
         /**
-         * Error: negative
+         * Error: with draw more than two decimals
          */
-        bankAccount.withdraw(-100.00);
-        assertEquals(22.25, bankAccount.getBalance());
+        assertThrows(IllegalArgumentException.class, ()->bankAccount1.withdraw(100.23456));
 
         /**
          * Zeros
@@ -87,6 +93,10 @@ class BankAccountTest {
          * Error
          */
         assertThrows(InsufficientFundsException.class, ()->bankAccount.withdraw(100));
+
+//        BankAccount bankAccount1 = new BankAccount("a@b.com", 200);
+
+//        assertThrows(IllegalArgumentException.class, ()->bankAccount1.withdraw(-100));
         //bankAccount.withdraw(100);
         //assertEquals(0, bankAccount.getBalance());
 
@@ -121,10 +131,10 @@ class BankAccountTest {
         assertFalse( BankAccount.isEmailValid("abcdef@mail.co##m"));
 
 
-        //contains other symbol other than underscore, period, or dash before or after @
+//        contains other symbol other than underscore, period, or dash before or after @
 //        /**CE: This test is a valid equivalence class member but it is not a border case**/
 //        assertTrue(BankAccount.isEmailValid( "abc.def@mail.com"));
-
+//
 //        /**CE: This is an invalid equivalence class, This is NOT a boarder case. In this instance a boarder case would
 //         * contain only one invalid symbol. Since this has at least one invalid symbol it is a member of an equivalence class**/
 //        assertFalse( BankAccount.isEmailValid("abc%def@mai~l.com"));
@@ -149,15 +159,103 @@ class BankAccountTest {
 
 
     }
+    @Test
+    void isAmountValidTest()throws IllegalArgumentException {
+        BankAccount bankAccount1 = new BankAccount("a@b.com", 200);
+        //check negative maximum-100, middle -50, minimum -1
+        assertThrows(IllegalArgumentException.class, () -> bankAccount1.isAmountValid(-100));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount1.isAmountValid(-50));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount1.isAmountValid(-1));
+
+        //check decimals
+        assertThrows(IllegalArgumentException.class, () -> bankAccount1.isAmountValid(0.001));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount1.isAmountValid(0.5555555555));
+
+    }
+
 
     @Test
-    void constructorTest() {
+    void depositTest()throws IllegalArgumentException{
+        BankAccount bankAccount = new BankAccount("a@b.com", 200);
+        //deposit maximum 100
+        bankAccount.deposit(100);
+        assertEquals(300.0, bankAccount.getBalance());
+        //deposit medium 50
+        bankAccount.deposit(50);
+        assertEquals(350.0, bankAccount.getBalance());
+        //deposit minimum 1
+        bankAccount.deposit(1);
+        assertEquals(351.0, bankAccount.getBalance());
+
+        //check negative maximum-100, middle -50, minimum -1
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(-100));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(-50));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(-1));
+        //check decimals
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(-0.001));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(-0.55555555));
+
+
+    }
+
+
+    @Test
+    void transferTest() throws InsufficientFundsException, IllegalArgumentException{
+        BankAccount bankAccountA = new BankAccount("a@b.com", 200);
+        BankAccount bankAccountB = new BankAccount("a@b.com", 200);
+        //transfer from BankA to BankB,maximum
+        bankAccountA.transfer("out",100);
+        assertEquals(100.0, bankAccountA.getBalance());
+        bankAccountB.transfer("in",100);
+        assertEquals(300.0, bankAccountB.getBalance());
+
+        //transfer from BankB to BankA, medium
+        bankAccountB.transfer("out",50);
+        assertEquals(250.0, bankAccountB.getBalance());
+        bankAccountA.transfer("in",50);
+        assertEquals(150.0, bankAccountA.getBalance());
+
+        //transfer from BankB to BankA, minimum
+        bankAccountB.transfer("out",1);
+        assertEquals(249.0, bankAccountB.getBalance());
+        bankAccountA.transfer("in",1);
+        assertEquals(151.0, bankAccountA.getBalance());
+
+        //transfer from BankB to BankA, tenths
+        bankAccountB.transfer("out",0.1);
+        assertEquals(248.9, bankAccountB.getBalance());
+        bankAccountA.transfer("in",0.1);
+        assertEquals(151.1, bankAccountA.getBalance());
+
+        //transfer from BankB to BankA, hundreds
+        bankAccountB.transfer("out",0.01);
+        assertEquals(248.89, bankAccountB.getBalance());
+        bankAccountA.transfer("in",0.01);
+        assertEquals(151.11, bankAccountA.getBalance());
+
+        //throw Error if action is empty
+        assertThrows(IllegalArgumentException.class, () -> bankAccountA.transfer("",12.22));
+
+        //throw Error if action contains capital letters
+        assertThrows(IllegalArgumentException.class, () -> bankAccountA.transfer("In",12.22));
+        assertThrows(IllegalArgumentException.class, () -> bankAccountA.transfer("IN",12.22));
+    }
+
+
+    @Test
+    void constructorTest()throws IllegalArgumentException{
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
 
         assertEquals("a@b.com", bankAccount.getEmail());
         assertEquals(200, bankAccount.getBalance());
         //check for exception thrown correctly
         assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
+
+        //check for exception thrown correctly
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("a@b.com", -100));
+
+        //check for exception thrown correctly
+        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("-dni@cc", -0.111));
     }
 
 }
